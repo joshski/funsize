@@ -1,7 +1,7 @@
 {
   "scripts": {
-    "start": "node --require ./suppress-experimental-warnings.js --enable-source-maps --loader ./loader.mjs ./src/server.ts",
-    "test": "node --require ./suppress-experimental-warnings.js --enable-source-maps --loader ./loader.mjs ./example/routes/index.test.tsx"
+    "start": "node --no-warnings=ExperimentalWarning --enable-source-maps --loader ./loader.mjs ./src/server.ts",
+    "test": "node --no-warnings=ExperimentalWarning --enable-source-maps --loader ./loader.mjs ./example/routes/index.test.tsx"
   },
   "devDependencies": {
     "@types/node": "^18.15.5",
