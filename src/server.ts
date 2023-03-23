@@ -15,7 +15,7 @@ const server = createServer(async function respond(
     );
     console.log(`${request.method} ${request.url}`);
     response.end(controllerResponse);
-  } catch (error: Error) {
+  } catch (error) {
     console.log(`${request.method} ${request.url}\n`, error);
     response.end(error.toString());
   }

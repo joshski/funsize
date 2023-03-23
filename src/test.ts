@@ -10,15 +10,10 @@ export async function render<Data>(
   return new Rendering(renderResult);
 }
 
+export const tests = []
+
 export function it(title: string, fn: Test) {
-  console.log(title);
-  fn()
-    .then(() => {
-      console.log("PASS: " + title);
-    })
-    .catch((error) => {
-      console.error("ERROR: %s\n%o", title, error);
-    });
+  tests.push({ title, fn })
 }
 
 type Test = {

@@ -1,11 +1,9 @@
-import React from "react";
-
 export async function get() {
   return { message: 'Hello World' }
 }
 
 export function html(data: Data) {
-  return (<p>{data.message + '!'}</p>)
+  return (<html><body><p>{data.message + '!'}</p></body></html>)
 }
 
 export function json(data: Data) {

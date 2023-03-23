@@ -2,9 +2,13 @@ import { readFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import { transformSync } from '@swc/core'
 
-const extensionsRegex = /\.m?tsx?$/
+const extensionsRegex = /\.tsx?$/
 
 export async function load(url, context, nextLoad) {
+  if (url.startsWith('node:')) {
+    return nextLoad(url, context)
+  }
+
   if (extensionsRegex.test(url)) {
     const rawSource = readFileSync(fileURLToPath(url), 'utf-8')
 
@@ -16,6 +20,11 @@ export async function load(url, context, nextLoad) {
           syntax: "typescript",
           jsx: true,
           dynamicImport: true
+        },
+        transform: {
+          react: {
+            runtime: 'automatic',
+          },
         },
       },
       module: {
