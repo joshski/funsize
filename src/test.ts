@@ -17,7 +17,7 @@ export function it(title: string, fn: Test) {
 }
 
 type Test = {
-  (): Promise<any>;
+  (): Promise<void>;
 };
 
 type Loader<Data> = {
@@ -29,9 +29,9 @@ type Renderer<Data> = {
 };
 
 class Rendering {
-  private readonly renderResult: any;
+  private readonly renderResult: object;
 
-  constructor(renderResult: any) {
+  constructor(renderResult: object) {
     this.renderResult = renderResult;
   }
 
