@@ -15,11 +15,11 @@ export async function load(url, context, nextLoad) {
     const { code } = transformSync(rawSource, {
       filename: url,
       jsc: {
-        target: "es2018",
+        target: 'es2018',
         parser: {
-          syntax: "typescript",
+          syntax: 'typescript',
           jsx: true,
-          dynamicImport: true
+          dynamicImport: true,
         },
         transform: {
           react: {
@@ -28,15 +28,15 @@ export async function load(url, context, nextLoad) {
         },
       },
       module: {
-        type: 'es6'
+        type: 'es6',
       },
-      sourceMaps: 'inline'
+      sourceMaps: 'inline',
     })
 
     return {
       format: 'module',
       shortCircuit: true,
-      source: code
+      source: code,
     }
   }
 

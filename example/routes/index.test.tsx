@@ -1,18 +1,18 @@
-import { get, html, json } from "./index.tsx";
-import { it, render } from "../../src/test.ts";
+import { get, html, json } from './index.tsx'
+import { it, renderHtml, renderJson } from '../../src/test.ts'
 
-it("renders html", async () => {
-  const response = await render(get, html);
-  response.html.shouldEqual(
+it('renders html', async () => {
+  const rendered = await renderHtml(get, html)
+  rendered.shouldEqual(
     <html>
       <body>
         <p>Hello World!</p>
       </body>
     </html>
-  );
-});
+  )
+})
 
-it("renders json", async () => {
-  const response = await render(get, json);
-  response.json.shouldEqual({ message: "Hello World!" });
-});
+it('renders json', async () => {
+  const rendered = await renderJson(get, json)
+  rendered.shouldEqual({ message: 'Hello World!' })
+})

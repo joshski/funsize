@@ -3,7 +3,13 @@ export async function get() {
 }
 
 export function html(data: Data) {
-  return (<html><body><p>{data.message + '!'}</p></body></html>)
+  return (
+    <html>
+      <body>
+        <p>{data.message + '!'}</p>
+      </body>
+    </html>
+  )
 }
 
 export function json(data: Data) {
@@ -11,5 +17,5 @@ export function json(data: Data) {
 }
 
 interface Data {
-  message: string;
+  message: string
 }

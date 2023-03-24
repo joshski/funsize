@@ -3,8 +3,8 @@ export interface RouteFinder {
 }
 
 type RoutePredicate = {
-  (route: Route): boolean;
-};
+  (route: Route): boolean
+}
 
 export default interface Route {
   path: string
