@@ -1,5 +1,6 @@
 import assert from 'assert'
 import * as ReactDOMServer from 'react-dom/server'
+import { Readable } from 'stream'
 
 export async function renderHtml<Data>(
   load: Loader<Data>,
@@ -52,6 +53,10 @@ class HtmlRendering {
     return ReactDOMServer.renderToString(this.renderedElement)
   }
 
+  toStream() {
+    return ReactDOMServer.renderToPipeableStream(this.renderedElement)
+  }
+
   shouldEqual(expectedElement: JSX.Element) {
     const renderedHTML = this.toString()
     const expectedHTML = ReactDOMServer.renderToString(expectedElement)
@@ -72,5 +77,12 @@ class JsonRendering {
 
   toString() {
     return JSON.stringify(this.renderedObject)
+  }
+
+  toStream() {
+    const s = new Readable()
+    s.push(this.toString())
+    s.push(null)
+    return s
   }
 }

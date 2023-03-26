@@ -17,13 +17,13 @@ export async function controller(
       routeModule[method.toLowerCase()],
       formatter
     )
-    return rendering.toString()
+    return rendering
   } else if (route.format === 'json') {
     const rendering = await renderJson(
       routeModule[method.toLowerCase()],
       formatter
     )
-    return rendering.toString()
+    return rendering
   }
   throw new Error('oops')
 }

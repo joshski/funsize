@@ -14,15 +14,12 @@ const server = createServer(async function respond(
       request.url as string
     )
     console.log(`${request.method} ${request.url}`)
-    response.end(controllerResponse)
+    controllerResponse.toStream().pipe(response)
+    // response.end(controllerResponse.toString())
   } catch (error) {
     console.log(`${request.method} ${request.url}\n`, error)
     response.end(error.toString())
   }
 })
 
-const port = 3000
-
-server.listen(port, () => {
-  console.log(`Server listening on http://localhost:${port}`)
-})
+export default server

@@ -10,7 +10,9 @@ async function runTests() {
   const resolvedPaths = globbedPaths.map((gp) =>
     path.resolve(process.cwd(), gp)
   )
-  const relativePaths = resolvedPaths.map((rp) => path.relative(__dirname, rp))
+  const relativePaths = resolvedPaths
+    .map((rp) => path.relative(__dirname, rp))
+    .map((p) => (p.startsWith('.') ? p : `./${p}`))
   await Promise.all(relativePaths.map((rp) => import(rp)))
   let passes = 0
   let fails = 0
