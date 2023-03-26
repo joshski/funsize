@@ -12,7 +12,3 @@ it('renders HTML', async function () {
 interface Data {
   lives: number
 }
-
-function load(): Promise<Data> {
-  throw new Error('Function not implemented.')
-}

@@ -36,7 +36,11 @@ async function dev() {
 class Commands {
   async 'Run all tests'() {
     console.clear()
-    await execa('npm test', [], { shell: true, stdio: 'inherit' })
+    await execa('./bin/test.sh', [], { shell: true, stdio: 'inherit' })
+  }
+  async 'Test coverage'() {
+    console.clear()
+    await execa('./bin/coverage.sh', [], { shell: true, stdio: 'inherit' })
   }
   'Open Browser'() {
     open('http://localhost:3000')
