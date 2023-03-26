@@ -1,4 +1,4 @@
-import { renderHtml, renderJson } from './test.ts'
+import { renderHtml, renderJson } from './render.ts'
 import { RouteFinder } from './route.ts'
 
 export async function controller(

@@ -1,23 +1,23 @@
 import assert from 'assert'
 import * as ReactDOMServer from 'react-dom/server'
-import { Readable } from 'stream'
+import { HtmlRendering, JsonRendering } from './render.ts'
 
 export async function renderHtml<Data>(
   load: Loader<Data>,
   render: HtmlRenderer<Data>
-): Promise<HtmlRendering> {
+): Promise<TestHtmlRendering> {
   const loadResult = await load()
   const renderResult = render(loadResult)
-  return new HtmlRendering(renderResult)
+  return new TestHtmlRendering(renderResult)
 }
 
 export async function renderJson<Data>(
   load: Loader<Data>,
   render: JsonRenderer<Data>
-): Promise<JsonRendering> {
+): Promise<TestJsonRendering> {
   const loadResult = await load()
   const renderResult = render(loadResult)
-  return new JsonRendering(renderResult)
+  return new TestJsonRendering(renderResult)
 }
 
 export const tests = []
@@ -42,21 +42,7 @@ type JsonRenderer<Data> = {
   (data: Data): object
 }
 
-class HtmlRendering {
-  private readonly renderedElement: JSX.Element
-
-  constructor(renderedElement: JSX.Element) {
-    this.renderedElement = renderedElement
-  }
-
-  toString() {
-    return ReactDOMServer.renderToString(this.renderedElement)
-  }
-
-  toStream() {
-    return ReactDOMServer.renderToPipeableStream(this.renderedElement)
-  }
-
+class TestHtmlRendering extends HtmlRendering {
   shouldEqual(expectedElement: JSX.Element) {
     const renderedHTML = this.toString()
     const expectedHTML = ReactDOMServer.renderToString(expectedElement)
@@ -64,25 +50,8 @@ class HtmlRendering {
   }
 }
 
-class JsonRendering {
-  private readonly renderedObject: object
-
-  constructor(renderedObject: object) {
-    this.renderedObject = renderedObject
-  }
-
+class TestJsonRendering extends JsonRendering {
   shouldEqual(expectedObject: object) {
     assert.deepEqual(this.renderedObject, expectedObject)
-  }
-
-  toString() {
-    return JSON.stringify(this.renderedObject)
-  }
-
-  toStream() {
-    const s = new Readable()
-    s.push(this.toString())
-    s.push(null)
-    return s
   }
 }
