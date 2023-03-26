@@ -35,6 +35,7 @@ async function dev() {
 
 class Commands {
   async 'Run all tests'() {
+    console.clear()
     await execa('npm test', [], { shell: true, stdio: 'inherit' })
   }
   'Open Browser'() {

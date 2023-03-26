@@ -1,6 +1,7 @@
 import { tests } from './test.ts'
 import glob from 'fast-glob'
 import path from 'path'
+import { stdout } from 'process'
 import { fileURLToPath } from 'url'
 const __dirname = path.resolve(fileURLToPath(import.meta.url), '..')
 
@@ -18,12 +19,11 @@ async function runTests() {
   let fails = 0
   for (const test of tests) {
     try {
-      console.log(`RUN: ${test.title}`)
       await test.fn()
-      console.log(`PASS: ${test.title}`)
+      stdout.write('.')
       passes++
     } catch (e) {
-      console.error(`FAIL: ${test.title}`)
+      stdout.write('!')
       console.error(e)
       fails++
     }

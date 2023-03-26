@@ -1,0 +1,1 @@
+c8 node --no-warnings=ExperimentalWarning --enable-source-maps --loader ./loader.mjs ./src/run-tests.ts './**/*.test.*'

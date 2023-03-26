@@ -1,9 +1,9 @@
 {
   "scripts": {
-    "dev": "node --no-warnings=ExperimentalWarning --enable-source-maps --loader ./loader.mjs ./src/run-dev.ts",
-    "start": "node --no-warnings=ExperimentalWarning --enable-source-maps --loader ./loader.mjs ./src/run-server.ts",
-    "test": "node --no-warnings=ExperimentalWarning --enable-source-maps --loader ./loader.mjs ./src/run-tests.ts './**/*.test.*'",
-    "coverage": "c8 node --no-warnings=ExperimentalWarning --enable-source-maps --loader ./loader.mjs ./src/run-tests.ts './**/*.test.*'"
+    "dev": "./bin/dev.sh",
+    "start": "./bin/server.sh",
+    "test": "./bin/test.sh",
+    "coverage": "./bin/coverage.sh"
   },
   "devDependencies": {
     "@types/node": "^18.15.5",
