@@ -1,1 +1,1 @@
-node --no-warnings=ExperimentalWarning --enable-source-maps --loader ./loader.mjs ./src/run-dev.ts
+./bin/node.sh ./src/run-dev.ts

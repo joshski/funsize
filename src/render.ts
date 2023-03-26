@@ -33,7 +33,16 @@ type JsonRenderer<Data> = {
   (data: Data): object
 }
 
-export class HtmlRendering {
+export interface Rendering {
+  toString(): string
+  toStream(): PipeableStream
+}
+
+export interface PipeableStream {
+  pipe<Writable extends NodeJS.WritableStream>(destination: Writable): Writable
+}
+
+export class HtmlRendering implements Rendering {
   private readonly renderedElement: JSX.Element
 
   constructor(renderedElement: JSX.Element) {
@@ -49,7 +58,7 @@ export class HtmlRendering {
   }
 }
 
-export class JsonRendering {
+export class JsonRendering implements Rendering {
   protected readonly renderedObject: object
 
   constructor(renderedObject: object) {
@@ -57,7 +66,7 @@ export class JsonRendering {
   }
 
   toString() {
-    return JSON.stringify(this.renderedObject)
+    return JSON.stringify(this.renderedObject, null, 2)
   }
 
   toStream() {

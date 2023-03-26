@@ -1,0 +1,1 @@
+node --no-warnings=ExperimentalWarning --enable-source-maps --loader ./loader.mjs "$@"

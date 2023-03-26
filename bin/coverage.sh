@@ -1,1 +1,1 @@
-./node_modules/.bin/c8 node --no-warnings=ExperimentalWarning --enable-source-maps --loader ./loader.mjs ./src/run-tests.ts './**/*.test.*'
+./node_modules/.bin/c8 --skip-full ./bin/test.sh

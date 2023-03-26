@@ -5,11 +5,14 @@ import { stdout } from 'process'
 import { fileURLToPath } from 'url'
 const __dirname = path.resolve(fileURLToPath(import.meta.url), '..')
 
-async function runTests() {
-  const paths = process.argv.slice(2)
+async function runTests({ cwd = process.cwd() }) {
+  let paths = process.argv.slice(2)
+  if (paths.length === 0) {
+    paths = ['./**/*.test.*']
+  }
   const globbedPaths = await glob(paths)
   const resolvedPaths = globbedPaths.map((gp) =>
-    path.resolve(process.cwd(), gp)
+    path.resolve(cwd, gp)
   )
   const relativePaths = resolvedPaths
     .map((rp) => path.relative(__dirname, rp))
@@ -24,6 +27,7 @@ async function runTests() {
       passes++
     } catch (e) {
       stdout.write('!')
+      console.log(`\nError executing ${test.title}`)
       console.error(e)
       fails++
     }
@@ -33,4 +37,4 @@ async function runTests() {
   console.log(`${fails} tests failed`)
 }
 
-runTests()
+runTests({})

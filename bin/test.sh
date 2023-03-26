@@ -1,1 +1,1 @@
-node --no-warnings=ExperimentalWarning --enable-source-maps --loader ./loader.mjs ./src/run-tests.ts './**/*.test.*'
+./bin/node.sh ./src/run-tests.ts "$@"
