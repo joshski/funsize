@@ -3,6 +3,7 @@ import glob from 'fast-glob'
 import path from 'path'
 import { stdout } from 'process'
 import { fileURLToPath } from 'url'
+import util from 'node:util'
 const __dirname = path.resolve(fileURLToPath(import.meta.url), '..')
 
 async function runTests({ cwd = process.cwd() }) {
@@ -20,10 +21,10 @@ async function runTests({ cwd = process.cwd() }) {
   await Promise.all(relativePaths.map((rp) => import(rp)))
   let passes = 0
   let fails = 0
-  for (const test of tests) {
+  async function runTest(test) {
     try {
       await test.fn()
-      stdout.write('.')
+      stdout.write(util.format('\x1b[32m%s\x1b[0m', '.'))
       passes++
     } catch (e) {
       stdout.write('!')
@@ -32,9 +33,10 @@ async function runTests({ cwd = process.cwd() }) {
       fails++
     }
   }
+  await Promise.all(tests.map(runTest))
   console.log('')
-  console.log(`${passes} tests passed`)
-  console.log(`${fails} tests failed`)
+  console.log('\x1b[32m%s\x1b[0m tests passed', passes)
+  console.log('\x1b[32m%s\x1b[0m tests failed', fails)
 }
 
 runTests({})
