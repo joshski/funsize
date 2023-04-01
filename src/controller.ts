@@ -4,9 +4,9 @@ import { Request } from './index.ts'
 
 export async function controller(
   routes: RouteFinder,
-  method: string,
-  path: string
+  request: Request
 ) : Promise<Rendering> {
+  const { method, path } = request
   const route = routes.find((r) => r.path === path && r.method === method)
   if (!route) {
     throw new Error(`No route matching ${method} ${path}`)
@@ -14,13 +14,6 @@ export async function controller(
   const routeModule = await import(route.module)
   const formatter = routeModule[route.format]
   const formatRenderer = formatRenderers[route.format]
-  const request : Request = {
-    query: {
-      get<T>(name: string): T {
-        return null as T
-      }
-    }
-  }
   const rendering = await formatRenderer(
     routeModule[method.toLowerCase()],
     formatter,

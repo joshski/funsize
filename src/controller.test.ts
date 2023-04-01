@@ -11,7 +11,16 @@ it('executes HTML handlers', async () => {
       format: 'html',
     },
   ]
-  const result = await controller(routes, 'get', '/foo')
+  const request = {
+    method: 'get',
+    path: '/foo',
+    query: {
+      get: <T>(name: string): T => {
+        return null as T
+      }
+    }
+  }
+  const result = await controller(routes, request)
   const string = result.toString()
   assert.strictEqual(
     string,
@@ -28,14 +37,32 @@ it('executes JSON handlers', async () => {
       format: 'json',
     },
   ]
-  const result = await controller(routes, 'get', '/foo')
+  const request = {
+    method: 'get',
+    path: '/foo',
+    query: {
+      get: <T>(name: string): T => {
+        return null as T
+      }
+    }
+  }
+  const result = await controller(routes, request)
   const string = result.toString()
   assert.strictEqual(string, '{\n  "message": "Hello World!"\n}')
 })
 
 it('throws when no route exists', async () => {
   const routes = []
-  await assert.rejects(controller(routes, 'get', '/foo'), {
+  const request = {
+    method: 'get',
+    path: '/foo',
+    query: {
+      get: <T>(name: string): T => {
+        return null as T
+      }
+    }
+  }
+  await assert.rejects(controller(routes, request), {
     message: 'No route matching get /foo',
   })
 })

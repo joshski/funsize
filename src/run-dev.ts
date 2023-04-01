@@ -1,8 +1,7 @@
 import server from './server.ts'
-import Enquirer from 'enquirer'
 import open from 'open'
 import execa from 'execa'
-const AutoComplete = (Enquirer as any).AutoComplete
+import { emitKeypressEvents } from 'node:readline';
 
 const port = 3000
 
@@ -12,60 +11,42 @@ server.listen(port, () => {
 })
 
 async function dev() {
-  const commands = new Commands()
-
-  const prompt = new AutoComplete({
-    limit: 10,
-    initial: 0,
-    choices: methodsOf(Commands),
-  })
-
-  let answer
-  try {
-    answer = await prompt.run()
-  } catch (e) {
-    process.exit(1)
-  }
-  const result = commands[answer].call(commands)
-  if (typeof result === 'object' && typeof result.then === 'function') {
-    await result
-  }
-  await dev()
+  emitKeypressEvents(process.stdin)
+  process.stdin.setRawMode(true);
+  process.stdin.on('keypress', keypress)
+  console.clear()
+  logOptions()
 }
 
-class Commands {
-  async 'Run all tests'() {
-    console.clear()
-    await execa('./bin/test.sh', [], { shell: true, stdio: 'inherit' })
-  }
-  async 'Test coverage'() {
-    console.clear()
-    await execa('./bin/coverage.sh', [], { shell: true, stdio: 'inherit' })
-  }
-  'Open Browser'() {
-    open('http://localhost:3000')
-  }
-  'Quit'() {
-    process.exit(0)
+function logOptions() {
+  console.log('\n\x1b[32mt\x1b[0m tests \x1b[90m|\x1b[0m \x1b[32mc\x1b[0m coverage \x1b[90m|\x1b[0m \x1b[32mb\x1b[0m browser\n')
+}
+
+const commands = {
+  t: tests,
+  c: coverage,
+  b: browser
+}
+
+async function keypress(s, key) {
+  if (key.name === 'c' && key.ctrl) {
+    process.exit();
+  } else if (commands[key.name]) {
+    await commands[key.name]()
+    logOptions()
   }
 }
 
-function methodsOf(Class) {
-  const array = []
-  function methods(obj) {
-    if (obj) {
-      for (const p of Object.getOwnPropertyNames(obj)) {
-        if (obj[p] instanceof Function && p !== 'constructor') {
-          array.push(p)
-        }
-      }
-      const p = Object.getPrototypeOf(obj)
-      if (p !== Object.prototype) {
-        methods(p)
-      }
-    }
-  }
-  methods(Class.prototype)
-  return array
+async function tests() {
+  console.clear()
+  await execa('./bin/test.sh', [], { shell: true, stdio: 'inherit' })
 }
 
+async function coverage() {
+  console.clear()
+  await execa('./bin/coverage.sh', [], { shell: true, stdio: 'inherit' })
+}
+
+function browser() {
+  open('http://localhost:3000')
+}
