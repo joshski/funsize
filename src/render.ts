@@ -2,22 +2,6 @@ import * as ReactDOMServer from 'react-dom/server'
 import { Readable } from 'stream'
 import { Request } from '.'
 
-type Builder<Rendered, Rendering> = {
-  (rendered: Rendered): Rendering
-}
-
-export async function renderAny<Data, Rendered, Rendering>(
-  load: Loader<Data>,
-  render: Render<Data, Rendered>,
-  request: Request,
-  builder: Builder<Rendered, Rendering>
-): Promise<Rendering> {
-  const loadResult = await load(request)
-  const renderResult = render(loadResult)
-  const rendering = builder(renderResult)
-  return rendering
-}
-
 export async function renderHtml<Data>(
   load: Loader<Data>,
   render: HtmlRenderer<Data>,
@@ -34,7 +18,20 @@ export async function renderJson<Data>(
   return renderAny(load, render, request, (r) => new JsonRendering(r))
 }
 
+export async function renderAny<Data, Rendered, Rendering>(
+  load: Loader<Data>,
+  render: Render<Data, Rendered>,
+  request: Request,
+  builder: Builder<Rendered, Rendering>
+): Promise<Rendering> {
+  return builder(render(await load(request)))
+}
+
 export const tests = []
+
+type Builder<Rendered, Rendering> = {
+  (rendered: Rendered): Rendering
+}
 
 export type Loader<Data> = {
   (request?: Request): Promise<Data>

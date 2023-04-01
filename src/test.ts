@@ -3,6 +3,14 @@ import * as ReactDOMServer from 'react-dom/server'
 import { HtmlRendering, JsonRendering, renderAny, Loader, Render, JsonRenderer } from './render.ts'
 import { Request } from './index.ts'
 
+const nullRequest: Request = {
+  query: {
+    get<T>(_name: string): T {
+      return null as T
+    },
+  }
+}
+
 export async function renderHtml<Data>(
   load: Loader<Data>,
   render: Render<Data, JSX.Element>,
@@ -14,14 +22,6 @@ export async function renderHtml<Data>(
     request,
     (r) => new TestHtmlRendering(r)
   )
-}
-
-const nullRequest: Request = {
-  query: {
-    get<T>(_name: string): T {
-      return null as T
-    }
-  }
 }
 
 export async function renderJson<Data>(
