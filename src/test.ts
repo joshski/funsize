@@ -14,14 +14,27 @@ const nullRequest: Request = {
 export async function renderHtml<Data>(
   load: Loader<Data>,
   render: Render<Data, JSX.Element>,
-  request: Request = nullRequest
+  request: Request | object = nullRequest
 ): Promise<TestHtmlRendering> {
   return renderAny<Data, JSX.Element, TestHtmlRendering>(
     load,
     render,
-    request,
+    buildRequest(request),
     (r) => new TestHtmlRendering(r)
   )
+}
+
+function buildRequest(object: Request | object) : Request {
+  if ('query' in object) {
+    return object as Request
+  }
+  return {
+    query: {
+      get<T>(name: string) {
+        return object[name] as T
+      }
+    }
+  }
 }
 
 export async function renderJson<Data>(
