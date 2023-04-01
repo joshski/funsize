@@ -1,23 +1,35 @@
 import assert from 'assert'
 import * as ReactDOMServer from 'react-dom/server'
-import { HtmlRendering, JsonRendering } from './render.ts'
+import { HtmlRendering, JsonRendering, renderAny, Loader, Render, JsonRenderer } from './render.ts'
+import { Request } from './index.ts'
 
 export async function renderHtml<Data>(
   load: Loader<Data>,
-  render: HtmlRenderer<Data>
+  render: Render<Data, JSX.Element>,
+  request: Request = nullRequest
 ): Promise<TestHtmlRendering> {
-  const loadResult = await load()
-  const renderResult = render(loadResult)
-  return new TestHtmlRendering(renderResult)
+  return renderAny<Data, JSX.Element, TestHtmlRendering>(
+    load,
+    render,
+    request,
+    (r) => new TestHtmlRendering(r)
+  )
+}
+
+const nullRequest: Request = {
+  query: {
+    get<T>(_name: string): T {
+      return null as T
+    }
+  }
 }
 
 export async function renderJson<Data>(
   load: Loader<Data>,
-  render: JsonRenderer<Data>
+  render: JsonRenderer<Data>,
+  request: Request = nullRequest
 ): Promise<TestJsonRendering> {
-  const loadResult = await load()
-  const renderResult = render(loadResult)
-  return new TestJsonRendering(renderResult)
+  return renderAny(load, render, request, (r) => new TestJsonRendering(r))
 }
 
 export const tests = []
@@ -28,18 +40,6 @@ export function it(title: string, fn: Test) {
 
 type Test = {
   (): Promise<void>
-}
-
-type Loader<Data> = {
-  (): Promise<Data>
-}
-
-type HtmlRenderer<Data> = {
-  (data: Data): JSX.Element
-}
-
-type JsonRenderer<Data> = {
-  (data: Data): object
 }
 
 class TestHtmlRendering extends HtmlRendering {

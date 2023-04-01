@@ -1,6 +1,6 @@
 import { Rendering, renderHtml, renderJson } from './render.ts'
 import { RouteFinder } from './route.ts'
-import router from './router.ts'
+import { Request } from './index.ts'
 
 export async function controller(
   routes: RouteFinder,
@@ -14,9 +14,17 @@ export async function controller(
   const routeModule = await import(route.module)
   const formatter = routeModule[route.format]
   const formatRenderer = formatRenderers[route.format]
+  const request : Request = {
+    query: {
+      get<T>(name: string): T {
+        return null as T
+      }
+    }
+  }
   const rendering = await formatRenderer(
     routeModule[method.toLowerCase()],
-    formatter
+    formatter,
+    request
   )
   return rendering
 }

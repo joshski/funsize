@@ -1,6 +1,5 @@
 import assert from 'node:assert'
-import { it } from './test.ts'
-import { renderHtml } from './render.ts'
+import { it, renderHtml } from './test.ts'
 
 it('renders HTML', async function () {
   const load = async () => ({ lives: 9 })

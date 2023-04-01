@@ -1,5 +1,9 @@
-export async function get() {
-  return { message: 'Hello World' }
+import { Request } from '../../src'
+
+export async function get(request: Request) {
+  return {
+    message: request.query.get<string>('greeting') || 'Hello World'
+  }
 }
 
 export function html(data: Data) {
