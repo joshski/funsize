@@ -1,30 +1,44 @@
 import assert from 'assert'
 import * as ReactDOMServer from 'react-dom/server'
-import { HtmlRendering, JsonRendering, renderAny, Loader, Render, JsonRenderer } from './render.ts'
+import {
+  HtmlRendering,
+  JsonRendering,
+  renderAny,
+  Loader,
+  Render,
+  JsonRenderer,
+} from './render.ts'
 import { Request } from './index.ts'
 
-const nullRequest: Request = {
-  query: {
-    get<T>(_name: string): T {
-      return null as T
-    },
+export const render = {
+  async html<Data>(
+    load: Loader<Data>,
+    render: Render<Data, JSX.Element>,
+    request: Request | object = {}
+  ) {
+    return renderAny<Data, JSX.Element, TestHtmlRendering>(
+      load,
+      render,
+      buildRequest(request),
+      (r) => new TestHtmlRendering(r)
+    )
+  },
+
+  async json<Data>(
+    load: Loader<Data>,
+    render: JsonRenderer<Data>,
+    request: Request | object = {}
+  ) {
+    return renderAny<Data, object, TestJsonRendering>(
+      load,
+      render,
+      buildRequest(request),
+      (r) => new TestJsonRendering(r)
+    )
   }
 }
 
-export async function renderHtml<Data>(
-  load: Loader<Data>,
-  render: Render<Data, JSX.Element>,
-  request: Request | object = nullRequest
-): Promise<TestHtmlRendering> {
-  return renderAny<Data, JSX.Element, TestHtmlRendering>(
-    load,
-    render,
-    buildRequest(request),
-    (r) => new TestHtmlRendering(r)
-  )
-}
-
-function buildRequest(object: Request | object) : Request {
+function buildRequest(object: Request | object): Request {
   if ('query' in object) {
     return object as Request
   }
@@ -32,17 +46,9 @@ function buildRequest(object: Request | object) : Request {
     query: {
       get<T>(name: string) {
         return object[name] as T
-      }
-    }
+      },
+    },
   }
-}
-
-export async function renderJson<Data>(
-  load: Loader<Data>,
-  render: JsonRenderer<Data>,
-  request: Request = nullRequest
-): Promise<TestJsonRendering> {
-  return renderAny(load, render, request, (r) => new TestJsonRendering(r))
 }
 
 export const tests = []

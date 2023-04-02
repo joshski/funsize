@@ -19,7 +19,7 @@ async function dev() {
 }
 
 function logOptions() {
-  console.log('\n\x1b[32mt\x1b[0m tests \x1b[90m|\x1b[0m \x1b[32mc\x1b[0m coverage \x1b[90m|\x1b[0m \x1b[32mb\x1b[0m browser\n')
+  console.log('\n> \x1b[32mt\x1b[0m tests \x1b[90m|\x1b[0m \x1b[32mc\x1b[0m coverage \x1b[90m|\x1b[0m \x1b[32mb\x1b[0m browser\n')
 }
 
 const commands = {
