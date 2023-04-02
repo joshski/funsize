@@ -2,8 +2,8 @@ import { get, html, json } from './index.tsx'
 import { it, renderHtml, renderJson } from '../../src/test.ts'
 
 it('renders html', async () => {
-  const rendered = await renderHtml(get, html)
-  rendered.shouldEqual(
+  const renderedHtml = await renderHtml(get, html)
+  renderedHtml.shouldEqual(
     <html>
       <body>
         <p>Hello World!</p>
@@ -13,8 +13,8 @@ it('renders html', async () => {
 })
 
 it('renders html with a query string', async () => {
-  const rendered = await renderHtml(get, html, { greeting: 'howdy' })
-  rendered.shouldEqual(
+  const renderedHtml = await renderHtml(get, html, { greeting: 'howdy' })
+  renderedHtml.shouldEqual(
     <html>
       <body>
         <p>howdy!</p>
@@ -24,6 +24,6 @@ it('renders html with a query string', async () => {
 })
 
 it('renders json', async () => {
-  const rendered = await renderJson(get, json)
-  rendered.shouldEqual({ message: 'Hello World!' })
+  const renderedJson = await renderJson(get, json)
+  renderedJson.shouldEqual({ message: 'Hello World!' })
 })
