@@ -1,41 +1,26 @@
 import assert from 'assert'
 import * as ReactDOMServer from 'react-dom/server'
-import {
-  HtmlRendering,
-  JsonRendering,
-  renderAny,
-  Loader,
-  Render,
-  JsonRenderer,
-} from './render.ts'
+import { HtmlRendering, JsonRendering, renderAny } from './render.ts'
 import { Request } from './index.ts'
 
 export const render = {
-  async html<Data>(
-    load: Loader<Data>,
-    render: Render<Data, JSX.Element>,
-    request: Request | object = {}
-  ) {
+  async html<Data>(route: HtmlRoute<Data>, request: Request | object = {}) {
     return renderAny<Data, JSX.Element, TestHtmlRendering>(
-      load,
-      render,
+      route.get,
+      route.html,
       buildRequest(request),
       (r) => new TestHtmlRendering(r)
     )
   },
 
-  async json<Data>(
-    load: Loader<Data>,
-    render: JsonRenderer<Data>,
-    request: Request | object = {}
-  ) {
+  async json<Data>(route: JsonRoute<Data>, request: Request | object = {}) {
     return renderAny<Data, object, TestJsonRendering>(
-      load,
-      render,
+      route.get,
+      route.json,
       buildRequest(request),
       (r) => new TestJsonRendering(r)
     )
-  }
+  },
 }
 
 function buildRequest(object: Request | object): Request {
@@ -43,6 +28,8 @@ function buildRequest(object: Request | object): Request {
     return object as Request
   }
   return {
+    method: null,
+    path: '',
     query: {
       get<T>(name: string) {
         return object[name] as T
@@ -59,6 +46,16 @@ export function it(title: string, fn: Test) {
 
 type Test = {
   (): Promise<void>
+}
+
+interface HtmlRoute<Data> {
+  get(request: Request): Promise<Data>
+  html(data: Data): JSX.Element
+}
+
+interface JsonRoute<Data> {
+  get(request: Request): Promise<Data>
+  json(data: Data): object
 }
 
 class TestHtmlRendering extends HtmlRendering {

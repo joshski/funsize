@@ -3,28 +3,28 @@ import { Readable } from 'stream'
 import { Request } from '.'
 
 export async function renderHtml<Data>(
-  load: Loader<Data>,
-  render: HtmlRenderer<Data>,
+  loader: Loader<Data>,
+  renderer: HtmlRenderer<Data>,
   request: Request
 ): Promise<HtmlRendering> {
-  return renderAny(load, render, request, (r) => new HtmlRendering(r))
+  return renderAny(loader, renderer, request, (r) => new HtmlRendering(r))
 }
 
 export async function renderJson<Data>(
-  load: Loader<Data>,
-  render: JsonRenderer<Data>,
+  loader: Loader<Data>,
+  renderer: JsonRenderer<Data>,
   request: Request
 ): Promise<JsonRendering> {
-  return renderAny(load, render, request, (r) => new JsonRendering(r))
+  return renderAny(loader, renderer, request, (r) => new JsonRendering(r))
 }
 
 export async function renderAny<Data, Rendered, Rendering>(
-  load: Loader<Data>,
-  render: Render<Data, Rendered>,
+  loader: Loader<Data>,
+  renderer: Render<Data, Rendered>,
   request: Request,
   builder: Builder<Rendered, Rendering>
 ): Promise<Rendering> {
-  return builder(render(await load(request)))
+  return builder(renderer(await loader(request)))
 }
 
 export const tests = []

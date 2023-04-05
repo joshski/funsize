@@ -1,9 +1,9 @@
-import { get, html, json } from './index.tsx'
 import { it, render } from '../../src/test.ts'
+import * as route from './index.tsx'
 
 it('renders html', async () => {
-  const renderedHtml = await render.html(get, html)
-  renderedHtml.shouldEqual(
+  const html = await render.html(route)
+  html.shouldEqual(
     <html>
       <body>
         <p>Hello World!</p>
@@ -13,8 +13,8 @@ it('renders html', async () => {
 })
 
 it('renders html with a query string', async () => {
-  const renderedHtml = await render.html(get, html, { greeting: 'howdy' })
-  renderedHtml.shouldEqual(
+  const html = await render.html(route, { greeting: 'howdy' })
+  html.shouldEqual(
     <html>
       <body>
         <p>howdy!</p>
@@ -24,6 +24,11 @@ it('renders html with a query string', async () => {
 })
 
 it('renders json', async () => {
-  const renderedJson = await render.json(get, json)
-  renderedJson.shouldEqual({ message: 'Hello World!' })
+  const json = await render.json(route)
+  json.shouldEqual({ message: 'Hello World!' })
+})
+
+it('renders json with a query string', async () => {
+  const json = await render.json(route, { greeting: 'hola' })
+  json.shouldEqual({ message: 'hola!' })
 })
