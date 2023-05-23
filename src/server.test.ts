@@ -9,7 +9,7 @@ it('responds to HTTP requests', async () => {
   const response = await supertest(server(serverOptions)).get('/')
   assert.strictEqual(
     response.text,
-    '<!DOCTYPE html><html><body><p>Hello World!</p></body></html>'
+    '<!DOCTYPE html><html><head><script src="/__hydrate.js"></script></head><body><p>Hello World!</p><button>You clicked me <!-- -->0<!-- --> times</button></body></html>'
   )
 })
 

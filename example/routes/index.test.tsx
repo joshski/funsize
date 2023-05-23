@@ -7,6 +7,7 @@ it('renders html', async () => {
     <html>
       <body>
         <p>Hello World!</p>
+        <route.Counter />
       </body>
     </html>
   )
@@ -18,6 +19,7 @@ it('renders html with a query string', async () => {
     <html>
       <body>
         <p>howdy!</p>
+        <route.Counter />
       </body>
     </html>
   )

@@ -1,6 +1,7 @@
 import * as ReactDOMServer from 'react-dom/server'
 import { Readable } from 'stream'
 import { Request } from '.'
+import injectHydrateScript from './injectHydrateScript.ts'
 
 export async function renderHtml<Data>(
   loader: Loader<Data>,
@@ -70,7 +71,7 @@ export class HtmlRendering implements Rendering {
   }
 
   toStream() {
-    return ReactDOMServer.renderToPipeableStream(this.renderedElement)
+    return ReactDOMServer.renderToPipeableStream(injectHydrateScript(this.renderedElement))
   }
 }
 

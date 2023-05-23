@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Request } from '../../src'
 
 export async function get(request: Request) {
@@ -11,9 +12,19 @@ export function html(data: Data) {
     <html>
       <body>
         <p>{data.message + '!'}</p>
+        <Counter />
       </body>
     </html>
   )
+}
+
+export function Counter() {
+  const [count, setCount] = useState(0)
+  return (
+    <button onClick={() => setCount(count + 1)}>
+      You clicked me {count} times
+    </button>
+  );
 }
 
 export function json(data: Data) {

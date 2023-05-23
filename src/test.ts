@@ -59,10 +59,13 @@ interface JsonRoute<Data> {
 }
 
 class TestHtmlRendering extends HtmlRendering {
-  shouldEqual(expectedElement: JSX.Element) {
+  shouldEqual(expectedElement: JSX.Element | string) {
     const renderedHTML = this.toString()
-    const expectedHTML = ReactDOMServer.renderToString(expectedElement)
-    assert.deepEqual(renderedHTML, expectedHTML)
+    const expectedHTML =
+      typeof expectedElement === 'string'
+        ? expectedElement
+        : ReactDOMServer.renderToString(expectedElement)
+    assert.equal(renderedHTML, expectedHTML)
   }
 }
 
