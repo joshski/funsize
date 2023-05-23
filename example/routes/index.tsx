@@ -3,7 +3,7 @@ import { Counter } from '../components/Counter.tsx'
 
 export async function get(request: Request) {
   return {
-    message: request.query.get<string>('greeting') || 'Hello World'
+    message: request.query.get('greeting') || 'Hello World'
   }
 }
 

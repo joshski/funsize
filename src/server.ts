@@ -5,6 +5,7 @@ import url from 'node:url'
 import { Request } from './index.ts'
 import fs from 'node:fs'
 import * as esbuild from 'esbuild'
+import querystring from 'node:querystring'
 
 type ServerOptions = {
   log: (...args) => void
@@ -35,12 +36,13 @@ export default function server(options: ServerOptions = defaultOptions) {
     try {
       const routes = await router()
       const u = url.parse(request.url)
+      const query = querystring.parse(u.query) as any
       const internalRequest : Request = {
         path: u.pathname,
         method: request.method,
         query: {
-          get<T>(name: string): T {
-            return null as T
+          get(name: string): string {
+            return query[name]
           }
         }
       }
@@ -48,7 +50,6 @@ export default function server(options: ServerOptions = defaultOptions) {
         routes,
         internalRequest
       )
-      // console.log(JSON.stringify(controllerResponse, null, 2))
       log(`${request.method} ${request.url}`)
       controllerResponse.toStream().pipe(response)
     } catch (error) {

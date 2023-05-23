@@ -5,5 +5,5 @@ export type Request = {
 }
 
 export type QueryString = {
-  get<T>(name: string) : T
+  get(name: string) : string
 }

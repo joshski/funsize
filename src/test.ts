@@ -31,8 +31,8 @@ function buildRequest(object: Request | object): Request {
     method: null,
     path: '',
     query: {
-      get<T>(name: string) {
-        return object[name] as T
+      get(name: string): string {
+        return object[name]
       },
     },
   }
