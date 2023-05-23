@@ -1,4 +1,5 @@
 import { it, render } from '../../src/test.ts'
+import { Counter } from '../components/Counter.tsx'
 import * as route from './index.tsx'
 
 it('renders html', async () => {
@@ -7,7 +8,7 @@ it('renders html', async () => {
     <html>
       <body>
         <p>Hello World!</p>
-        <route.Counter />
+        <Counter />
       </body>
     </html>
   )
@@ -19,7 +20,7 @@ it('renders html with a query string', async () => {
     <html>
       <body>
         <p>howdy!</p>
-        <route.Counter />
+        <Counter />
       </body>
     </html>
   )
