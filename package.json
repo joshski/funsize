@@ -1,7 +1,7 @@
 {
   "scripts": {
     "dev": "./bin/dev.sh",
-    "start": "./bin/server.sh",
+    "start": "./bin/server.sh example",
     "test": "./bin/test.sh",
     "coverage": "./bin/coverage.sh"
   },

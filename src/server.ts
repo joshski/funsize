@@ -3,16 +3,18 @@ import { controller } from './controller.ts'
 import router from './router.ts'
 import url from 'node:url'
 import { Request } from './index.ts'
-import fs from 'node:fs'
+import path from 'node:path'
 import * as esbuild from 'esbuild'
 import querystring from 'node:querystring'
 
 type ServerOptions = {
-  log: (...args) => void
+  log: (...args) => void,
+  appDirectory: string
 }
 
 const defaultOptions : ServerOptions = {
-  log: console.log
+  log: console.log,
+  appDirectory: path.resolve(process.cwd(), process.argv[2] || '.')
 }
 
 export default function server(options: ServerOptions = defaultOptions) {
@@ -34,7 +36,7 @@ export default function server(options: ServerOptions = defaultOptions) {
     }
 
     try {
-      const routes = await router()
+      const routes = await router(options.appDirectory)
       const u = url.parse(request.url)
       const query = querystring.parse(u.query) as any
       const internalRequest : Request = {
