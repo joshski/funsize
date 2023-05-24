@@ -39,5 +39,11 @@ it('finds routes', async () => {
       module: `${appDirectory}/routes/about/us.tsx`,
       format: 'html',
     },
+    {
+      format: 'json',
+      method: 'GET',
+      module: `${appDirectory}/routes/about/us.tsx`,
+      path: '/about/us.json'
+    }
   ])
 })

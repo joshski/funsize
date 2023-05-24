@@ -27,6 +27,10 @@ export function html(data: Data) {
   )
 }
 
+export function json(data: Data) {
+  return { ...data, hell: 'yes' }
+}
+
 interface Data {
   heading: string,
   contents: string

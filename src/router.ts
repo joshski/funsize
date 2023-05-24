@@ -25,7 +25,10 @@ export default async function router(appDirectory: string) {
             ? [
                 {
                   method: 'GET',
-                  path: '/index.json',
+                  path:
+                    tsxFile
+                      .substring(routesDirectory.length)
+                      .replace(/\.tsx$/, '') + '.json',
                   module: tsxFile,
                   format: 'json',
                 },
