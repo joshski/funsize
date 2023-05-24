@@ -10,6 +10,9 @@ export async function get(request: Request) {
 export function html(data: Data) {
   return (
     <html>
+      <head>
+        <link rel="icon" href="/favicon.svg" />
+      </head>
       <body>
         <p>{data.message + '!'}</p>
         <Counter />

@@ -14,5 +14,11 @@ export default async function router() {
       module: '../example/routes/index.tsx',
       format: 'json',
     },
+    {
+      method: 'GET',
+      path: '/favicon.svg',
+      module: '../example/routes/favicon.svg.tsx',
+      format: 'svg',
+    },
   ]
 }

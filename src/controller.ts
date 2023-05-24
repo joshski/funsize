@@ -1,4 +1,4 @@
-import { Rendering, renderHtml, renderJson } from './render.ts'
+import { Rendering, renderHtml, renderJson, renderSvg } from './render.ts'
 import { RouteFinder } from './route.ts'
 import { Request } from './index.ts'
 
@@ -24,5 +24,6 @@ export async function controller(
 
 const formatRenderers = {
   html: renderHtml,
-  json: renderJson
+  json: renderJson,
+  svg: renderSvg
 }

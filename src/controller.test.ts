@@ -24,7 +24,7 @@ it('executes HTML handlers', async () => {
   const string = result.toString()
   assert.strictEqual(
     string,
-    '<html><body><p>Hello World!</p><button>You clicked me <!-- -->0<!-- --> times</button></body></html>'
+    '<html><head><link rel="icon" href="/favicon.svg"/></head><body><p>Hello World!</p><button>You clicked me <!-- -->0<!-- --> times</button></body></html>'
   )
 })
 

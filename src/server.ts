@@ -51,6 +51,7 @@ export default function server(options: ServerOptions = defaultOptions) {
         internalRequest
       )
       log(`${request.method} ${request.url}`)
+      response.writeHead(200, { 'Content-Type': controllerResponse.getContentType() })
       controllerResponse.toStream().pipe(response)
     } catch (error) {
       log(`${request.method} ${request.url}\n`, error)

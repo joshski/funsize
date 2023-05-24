@@ -19,6 +19,14 @@ export async function renderJson<Data>(
   return renderAny(loader, renderer, request, (r) => new JsonRendering(r))
 }
 
+export async function renderSvg(
+  _loader: void,
+  renderer: SvgRenderer,
+  _request: void
+): Promise<HtmlRendering> {
+  return renderAnyWithoutData(renderer, (r) => new HtmlRendering(r))
+}
+
 export async function renderAny<Data, Rendered, Rendering>(
   loader: Loader<Data>,
   renderer: Render<Data, Rendered>,
@@ -26,6 +34,13 @@ export async function renderAny<Data, Rendered, Rendering>(
   builder: Builder<Rendered, Rendering>
 ): Promise<Rendering> {
   return builder(renderer(await loader(request)))
+}
+
+export async function renderAnyWithoutData<Rendered, Rendering>(
+  renderer: RenderWithoutData<Rendered>,
+  builder: Builder<Rendered, Rendering>
+): Promise<Rendering> {
+  return builder(renderer())
 }
 
 export const tests = []
@@ -42,6 +57,10 @@ type HtmlRenderer<Data> = {
   (data: Data): JSX.Element
 }
 
+type SvgRenderer = {
+  (): JSX.Element
+}
+
 export type JsonRenderer<Data> = {
   (data: Data): object
 }
@@ -50,9 +69,14 @@ export type Render<Data, Rendered> = {
   (data: Data): Rendered
 }
 
+export type RenderWithoutData<Rendered> = {
+  (): Rendered
+}
+
 export interface Rendering {
   toString(): string
   toStream(): PipeableStream
+  getContentType(): string
 }
 
 export interface PipeableStream {
@@ -73,6 +97,13 @@ export class HtmlRendering implements Rendering {
   toStream() {
     return ReactDOMServer.renderToPipeableStream(injectHydrateScript(this.renderedElement))
   }
+
+  getContentType(): string {
+    if (this.renderedElement.type === 'svg') {
+      return 'image/svg+xml'
+    }
+    return 'text/html'
+  }
 }
 
 export class JsonRendering implements Rendering {
@@ -91,5 +122,9 @@ export class JsonRendering implements Rendering {
     s.push(this.toString())
     s.push(null)
     return s
+  }
+
+  getContentType(): string {
+    return 'application/json'
   }
 }

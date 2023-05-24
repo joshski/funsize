@@ -6,6 +6,9 @@ it('renders html', async () => {
   const html = await render.html(route)
   html.shouldEqual(
     <html>
+      <head>
+        <link rel="icon" href="/favicon.svg"/>
+      </head>
       <body>
         <p>Hello World!</p>
         <Counter />
@@ -18,6 +21,9 @@ it('renders html with a query string', async () => {
   const html = await render.html(route, { greeting: 'howdy' })
   html.shouldEqual(
     <html>
+      <head>
+        <link rel="icon" href="/favicon.svg"/>
+      </head>
       <body>
         <p>howdy!</p>
         <Counter />

@@ -1,6 +1,6 @@
 import assert from 'assert'
 import * as ReactDOMServer from 'react-dom/server'
-import { HtmlRendering, JsonRendering, renderAny } from './render.ts'
+import { HtmlRendering, JsonRendering, renderAny, renderAnyWithoutData } from './render.ts'
 import { Request } from './index.ts'
 
 export const render = {
@@ -19,6 +19,13 @@ export const render = {
       route.json,
       buildRequest(request),
       (r) => new TestJsonRendering(r)
+    )
+  },
+
+  async svg(route: SvgRoute) {
+    return renderAnyWithoutData<JSX.Element, TestHtmlRendering>(
+      route.svg,
+      (r) => new TestHtmlRendering(r)
     )
   },
 }
@@ -51,6 +58,10 @@ type Test = {
 interface HtmlRoute<Data> {
   get(request: Request): Promise<Data>
   html(data: Data): JSX.Element
+}
+
+interface SvgRoute {
+  svg(): JSX.Element
 }
 
 interface JsonRoute<Data> {
