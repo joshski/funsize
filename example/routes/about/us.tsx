@@ -19,6 +19,9 @@ export function html(data: Data) {
         <p>
           <Counter />
         </p>
+        <p>
+          <img src="us.svg" />
+        </p>
       </body>
     </html>
   )

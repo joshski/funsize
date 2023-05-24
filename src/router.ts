@@ -35,7 +35,9 @@ export default async function router(appDirectory: string) {
             ? [
                 {
                   method: 'GET',
-                  path: '/favicon.svg',
+                  path: tsxFile
+                    .substring(routesDirectory.length)
+                    .replace(/\.tsx$/, ''),
                   module: tsxFile,
                   format: 'svg',
                 },

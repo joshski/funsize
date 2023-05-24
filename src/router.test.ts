@@ -29,6 +29,12 @@ it('finds routes', async () => {
     },
     {
       method: 'GET',
+      path: '/about/us.svg',
+      module: `${appDirectory}/routes/about/us.svg.tsx`,
+      format: 'svg',
+    },
+    {
+      method: 'GET',
       path: '/about/us',
       module: `${appDirectory}/routes/about/us.tsx`,
       format: 'html',
