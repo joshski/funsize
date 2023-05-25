@@ -9,7 +9,7 @@ const appDirectory = path.resolve(__dirname, '..', 'example')
 
 const serverOptions = { log: () => {}, appDirectory }
 
-it('responds to HTTP requests', async () => {
+it('responds with HTML', async () => {
   const response = await supertest(server(serverOptions)).get('/')
   assert.strictEqual(response.headers['content-type'], 'text/html')
   assert.strictEqual(
@@ -32,5 +32,14 @@ it('responds with SVG', async () => {
   assert.match(
     response.body.toString(),
     new RegExp('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 36">')
+  )
+})
+
+it('responds with client-side hydration js script', async () => {
+  const response = await supertest(server(serverOptions)).get('/__hydrate.js')
+  assert.strictEqual(response.headers['content-type'], 'application/javascript')
+  assert.match(
+    response.text,
+    /^\(\(\) => {/
   )
 })
