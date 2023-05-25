@@ -1,6 +1,6 @@
-import { readFileSync } from 'node:fs'
+import { readFile } from 'node:fs/promises'
 import { fileURLToPath } from 'node:url'
-import { transformSync } from '@swc/core'
+import { transform } from '@swc/core'
 
 const extensionsRegex = /\.tsx?$/
 
@@ -10,9 +10,9 @@ export async function load(url, context, nextLoad) {
   }
 
   if (extensionsRegex.test(url)) {
-    const rawSource = readFileSync(fileURLToPath(url), 'utf-8')
+    const rawSource = await readFile(fileURLToPath(url), 'utf-8')
 
-    const { code } = transformSync(rawSource, {
+    const { code } = await transform(rawSource, {
       filename: url,
       jsc: {
         target: 'es2018',
