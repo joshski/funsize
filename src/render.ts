@@ -1,7 +1,7 @@
 import * as ReactDOMServer from 'react-dom/server'
 import { Readable } from 'stream'
 import { Request } from '.'
-import injectHydrateScript from './injectHydrateScript.ts'
+import injectHydrateScript from './hydration/injectHydrateScript.ts'
 
 export async function renderHtml<Data>(
   loader: Loader<Data>,

@@ -1,4 +1,4 @@
-import server from './server.ts'
+import server from '../server.ts'
 import open from 'open'
 import execa from 'execa'
 import { emitKeypressEvents } from 'node:readline';

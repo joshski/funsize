@@ -1,5 +1,5 @@
 import assert from 'node:assert'
-import { it } from './test.ts'
+import { it } from './testing/test.ts'
 import path from 'node:path'
 import { fileURLToPath } from 'url'
 import router from './router.ts'

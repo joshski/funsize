@@ -1,7 +1,7 @@
 import assert from 'node:assert'
 import server from './server.ts'
 import supertest from 'supertest'
-import { it } from './test.ts'
+import { it } from './testing/test.ts'
 import path from 'node:path'
 import { fileURLToPath } from 'url'
 const __dirname = path.resolve(fileURLToPath(import.meta.url), '..')

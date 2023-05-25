@@ -1,6 +1,6 @@
 import assert from 'node:assert'
 import { controller } from './controller.ts'
-import { it } from './test.ts'
+import { it } from './testing/test.ts'
 
 it('executes HTML handlers', async () => {
   const routes = [

@@ -19,7 +19,7 @@ const defaultOptions : ServerOptions = {
 
 export default function server(options: ServerOptions = defaultOptions) {
   const { log } = options
-  const s = createServer(async function respond(
+  return createServer(async function respond(
     request: IncomingMessage,
     response: ServerResponse
   ) {
@@ -60,8 +60,6 @@ export default function server(options: ServerOptions = defaultOptions) {
       response.end(error.toString())
     }
   })
-  
-  return s
 }
 
 async function buildHydrateScript() {

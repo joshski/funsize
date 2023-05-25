@@ -1,7 +1,7 @@
 import { html as rootIndexHtml } from '../example/routes/index.tsx'
 import { html as aboutUsHtml } from '../example/routes/about/us.tsx'
 import { hydrateRoot } from 'react-dom/client'
-import injectHydrateScript from './injectHydrateScript.ts'
+import injectHydrateScript from './hydration/injectHydrateScript.ts'
 
 const routeMap = {
   '/': rootIndexHtml,

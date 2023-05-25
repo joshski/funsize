@@ -1,7 +1,7 @@
 import assert from 'assert'
 import * as ReactDOMServer from 'react-dom/server'
-import { HtmlRendering, JsonRendering, renderAny, renderAnyWithoutData } from './render.ts'
-import { Request } from './index.ts'
+import { HtmlRendering, JsonRendering, renderAny, renderAnyWithoutData } from '../render.ts'
+import { Request } from '../index.ts'
 
 export const render = {
   async html<Data>(route: HtmlRoute<Data>, request: Request | object = {}) {

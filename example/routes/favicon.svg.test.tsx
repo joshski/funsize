@@ -1,4 +1,4 @@
-import { it, render } from '../../src/test.ts'
+import { it, render } from '../../src/testing/test.ts'
 import * as route from './favicon.svg.tsx'
 
 it('renders svg', async () => {

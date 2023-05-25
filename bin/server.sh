@@ -1,3 +1,3 @@
 #!/bin/bash
 dir=$(dirname "$0")/..
-"$dir/bin/node.sh" "$dir/src/runServer.ts" "$@"
+"$dir/bin/node.sh" "$dir/src/scripts/runServer.ts" "$@"

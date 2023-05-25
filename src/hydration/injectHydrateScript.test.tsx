@@ -1,5 +1,5 @@
 import assert from 'node:assert'
-import { it, render } from './test.ts'
+import { it } from '../testing/test.ts'
 import injectHydrateScript from './injectHydrateScript.ts'
 import * as ReactDOMServer from 'react-dom/server'
 

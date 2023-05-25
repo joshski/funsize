@@ -1,5 +1,5 @@
 import assert from 'node:assert'
-import { it, render } from './test.ts'
+import { it, render } from './testing/test.ts'
 
 it('renders a route as HTML', async function () {
   const route = {

@@ -1,4 +1,4 @@
-import { it, render } from '../../../src/test.ts'
+import { it, render } from '../../../src/testing/test.ts'
 import { Counter } from '../../components/Counter.tsx'
 import * as route from './us.tsx'
 

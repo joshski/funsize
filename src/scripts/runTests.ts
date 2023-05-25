@@ -1,4 +1,4 @@
-import { runTests } from './test-runner.ts'
+import { runTests } from '../testing/test-runner.ts'
 import fastGlob from 'fast-glob'
 
 runTests({
