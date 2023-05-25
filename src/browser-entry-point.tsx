@@ -3,22 +3,19 @@ import { html as aboutUsHtml } from '../example/routes/about/us.tsx'
 import { hydrateRoot } from 'react-dom/client'
 import injectHydrateScript from './injectHydrateScript.ts'
 
-window.addEventListener('DOMContentLoaded', function () {
-  // TODO: replace with dynamically generated router
-  //       and expect page to eventually trigger an event with route data
+const routeMap = {
+  '/': rootIndexHtml,
+  '/about/us': aboutUsHtml
+}
 
-  if (window.location.href.endsWith('/about/us')) {
+window.__hydrate = function({ route, data }) {
+  const html = routeMap[route.path]
+  window.addEventListener('DOMContentLoaded', function () {
     hydrateRoot(
       document,
       injectHydrateScript(
-        aboutUsHtml({ heading: 'About us', contents: 'About us text...' })
+        html(data)
       )
     )
-  } else {
-    hydrateRoot(
-      document,
-      injectHydrateScript(rootIndexHtml({ message: 'Hello World' }))
-    )
-  }
-
-})
+  })
+}

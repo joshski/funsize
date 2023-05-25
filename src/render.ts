@@ -6,9 +6,15 @@ import injectHydrateScript from './injectHydrateScript.ts'
 export async function renderHtml<Data>(
   loader: Loader<Data>,
   renderer: HtmlRenderer<Data>,
-  request: Request
+  request: Request,
+  route: any
 ): Promise<HtmlRendering> {
-  return renderAny(loader, renderer, request, (r) => new HtmlRendering(r))
+  return renderAny(
+    loader,
+    renderer,
+    request,
+    (r, data) => new HtmlRendering(r, data, route)
+  )
 }
 
 export async function renderJson<Data>(
@@ -24,7 +30,7 @@ export async function renderSvg(
   renderer: SvgRenderer,
   _request: void
 ): Promise<HtmlRendering> {
-  return renderAnyWithoutData(renderer, (r) => new HtmlRendering(r))
+  return renderAnyWithoutData(renderer, (r) => new HtmlRendering(r, null))
 }
 
 export async function renderAny<Data, Rendered, Rendering>(
@@ -33,7 +39,8 @@ export async function renderAny<Data, Rendered, Rendering>(
   request: Request,
   builder: Builder<Rendered, Rendering>
 ): Promise<Rendering> {
-  return builder(renderer(await loader(request)))
+  const data = await loader(request)
+  return builder(renderer(data), data)
 }
 
 export async function renderAnyWithoutData<Rendered, Rendering>(
@@ -46,7 +53,7 @@ export async function renderAnyWithoutData<Rendered, Rendering>(
 export const tests = []
 
 type Builder<Rendered, Rendering> = {
-  (rendered: Rendered): Rendering
+  (rendered: Rendered, data?: any): Rendering
 }
 
 export type Loader<Data> = {
@@ -85,9 +92,13 @@ export interface PipeableStream {
 
 export class HtmlRendering implements Rendering {
   private readonly renderedElement: JSX.Element
+  private readonly data: any
+  private readonly route: any
 
-  constructor(renderedElement: JSX.Element) {
+  constructor(renderedElement: JSX.Element, data: any, route: any) {
     this.renderedElement = renderedElement
+    this.data = data
+    this.route = route
   }
 
   toString() {
@@ -95,7 +106,9 @@ export class HtmlRendering implements Rendering {
   }
 
   toStream() {
-    return ReactDOMServer.renderToPipeableStream(injectHydrateScript(this.renderedElement))
+    return ReactDOMServer.renderToPipeableStream(
+      injectHydrateScript(this.renderedElement, this.data, this.route)
+    )
   }
 
   getContentType(): string {

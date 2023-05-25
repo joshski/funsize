@@ -14,7 +14,9 @@ it('responds to HTTP requests', async () => {
   assert.strictEqual(response.headers['content-type'], 'text/html')
   assert.strictEqual(
     response.text,
-    '<!DOCTYPE html><html><head><link rel="icon" href="/favicon.svg"/><script src="/__hydrate.js"></script></head><body><p>Hello World!</p><button>You clicked me <!-- -->0<!-- --> times</button></body></html>'
+    '<!DOCTYPE html><html><head><link rel="icon" href="/favicon.svg"/><script src="/__hydrate.js"></script>' +
+    '<script>__hydrate({"route":{"method":"GET","path":"/"},"data":{"message":"Hello World"}})</script>' + 
+    '</head><body><p>Hello World!</p><button>You clicked me <!-- -->0<!-- --> times</button></body></html>'
   )
 })
 

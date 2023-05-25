@@ -1,6 +1,6 @@
 import { createElement } from 'react'
 
-export default function injectHydrateScript(htmlNode) {
+export default function injectHydrateScript(htmlNode, data = undefined, route = undefined) {
   if (htmlNode?.type !== 'html') {
     return htmlNode
   }
@@ -21,7 +21,16 @@ export default function injectHydrateScript(htmlNode) {
               'head',
               {},
               existingHeadNode.props.children,
-              createElement('script', { src: '/__hydrate.js' })
+              createElement('script', { src: '/__hydrate.js' }),
+              ...(data
+                ? [
+                    createElement('script', {
+                      dangerouslySetInnerHTML: {
+                        __html: `__hydrate(${JSON.stringify({ route, data })})`,
+                      },
+                    }),
+                  ]
+                : [])
             )
           }
           return child
@@ -38,7 +47,16 @@ export default function injectHydrateScript(htmlNode) {
       createElement(
         'head',
         {},
-        createElement('script', { src: '/__hydrate.js' })
+        createElement('script', { src: '/__hydrate.js' }),
+        ...(data
+          ? [
+              createElement('script', {
+                dangerouslySetInnerHTML: {
+                  __html: `__hydrate(${JSON.stringify({ route, data })})`,
+                },
+              }),
+            ]
+          : [])
       ),
       htmlNode.props.children
     )

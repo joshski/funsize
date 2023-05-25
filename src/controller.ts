@@ -17,7 +17,8 @@ export async function controller(
   const rendering = await formatRenderer(
     routeModule[method.toLowerCase()],
     formatter,
-    request
+    request,
+    { method: route.method, path: route.path }
   )
   return rendering
 }
