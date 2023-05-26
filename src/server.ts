@@ -42,11 +42,7 @@ export default function server(options: ServerOptions = defaultOptions) {
       const internalRequest : Request = {
         path: u.pathname,
         method: request.method,
-        query: {
-          get(name: string): string {
-            return query[name]
-          }
-        }
+        query
       }
       const controllerResponse = await controller(
         routes,

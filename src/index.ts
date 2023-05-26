@@ -1,9 +1,9 @@
 export type Request = {
   method: string,
   path: string,
-  query: QueryString
+  query: Dictionary<string>
 }
 
-export type QueryString = {
-  get(name: string) : string
+interface Dictionary<T> {
+  [Key: string]: T;
 }

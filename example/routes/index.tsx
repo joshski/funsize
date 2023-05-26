@@ -1,9 +1,8 @@
-import { Request } from '../../src'
 import { Counter } from '../components/Counter.tsx'
 
-export async function get(request: Request) {
+export async function get(params: Params) {
   return {
-    message: request.query.get('greeting') || 'Hello World'
+    message: params.greeting || 'Hello World'
   }
 }
 
@@ -23,6 +22,10 @@ export function html(data: Data) {
 
 export function json(data: Data) {
   return { message: `${data.message}!` }
+}
+
+interface Params {
+  greeting: string
 }
 
 interface Data {

@@ -2,12 +2,13 @@ import * as ReactDOMServer from 'react-dom/server'
 import { Readable } from 'stream'
 import { Request } from '.'
 import injectHydrateScript from './hydration/injectHydrateScript.ts'
+import Route from './route.ts'
 
 export async function renderHtml<Data>(
   loader: Loader<Data>,
   renderer: HtmlRenderer<Data>,
   request: Request,
-  route: any
+  route: Route
 ): Promise<HtmlRendering> {
   return renderAny(
     loader,
@@ -28,9 +29,10 @@ export async function renderJson<Data>(
 export async function renderSvg(
   _loader: void,
   renderer: SvgRenderer,
-  _request: void
+  _request: void,
+  route: Route
 ): Promise<HtmlRendering> {
-  return renderAnyWithoutData(renderer, (r) => new HtmlRendering(r, null))
+  return renderAnyWithoutData(renderer, (r) => new HtmlRendering(r, null, route))
 }
 
 export async function renderAny<Data, Rendered, Rendering>(
@@ -39,7 +41,7 @@ export async function renderAny<Data, Rendered, Rendering>(
   request: Request,
   builder: Builder<Rendered, Rendering>
 ): Promise<Rendering> {
-  const data = await loader(request)
+  const data = await loader(request.query)
   return builder(renderer(data), data)
 }
 
@@ -57,7 +59,7 @@ type Builder<Rendered, Rendering> = {
 }
 
 export type Loader<Data> = {
-  (request?: Request): Promise<Data>
+  (request?: any): Promise<Data>
 }
 
 type HtmlRenderer<Data> = {
@@ -93,9 +95,9 @@ export interface PipeableStream {
 export class HtmlRendering implements Rendering {
   private readonly renderedElement: JSX.Element
   private readonly data: any
-  private readonly route: any
+  private readonly route: Route
 
-  constructor(renderedElement: JSX.Element, data: any, route: any) {
+  constructor(renderedElement: JSX.Element, data: any, route: Route) {
     this.renderedElement = renderedElement
     this.data = data
     this.route = route

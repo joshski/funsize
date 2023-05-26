@@ -4,7 +4,7 @@ import { HtmlRendering, JsonRendering, renderAny, renderAnyWithoutData } from '.
 import { Request } from '../index.ts'
 
 export const render = {
-  async html<Data>(route: HtmlRoute<Data>, request: Request | object = {}) {
+  async html<Params, Data>(route: HtmlRoute<Params, Data>, request: object = {}) {
     return renderAny<Data, JSX.Element, TestHtmlRendering>(
       route.get,
       route.html,
@@ -13,7 +13,7 @@ export const render = {
     )
   },
 
-  async json<Data>(route: JsonRoute<Data>, request: Request | object = {}) {
+  async json<Params, Data>(route: JsonRoute<Params, Data>, request: object = {}) {
     return renderAny<Data, object, TestJsonRendering>(
       route.get,
       route.json,
@@ -30,18 +30,11 @@ export const render = {
   },
 }
 
-function buildRequest(object: Request | object): Request {
-  if ('query' in object) {
-    return object as Request
-  }
+function buildRequest(query: any): Request {
   return {
     method: null,
     path: '',
-    query: {
-      get(name: string): string {
-        return object[name]
-      },
-    },
+    query
   }
 }
 
@@ -55,8 +48,8 @@ type Test = {
   (): Promise<void>
 }
 
-interface HtmlRoute<Data> {
-  get(request: Request): Promise<Data>
+interface HtmlRoute<Params, Data> {
+  get(params: Params): Promise<Data>
   html(data: Data): JSX.Element
 }
 
@@ -64,8 +57,8 @@ interface SvgRoute {
   svg(): JSX.Element
 }
 
-interface JsonRoute<Data> {
-  get(request: Request): Promise<Data>
+interface JsonRoute<Params, Data> {
+  get(params: Params): Promise<Data>
   json(data: Data): object
 }
 
